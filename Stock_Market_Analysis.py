@@ -36,6 +36,9 @@ model = LinearRegression()
 model.fit(X, y)
 
 # Use the model to make predictions
-next_day = df.index[-1] + pd.DateOffset(1)
-prediction = model.predict([[next_day]])[0]
+last_day = pd.to_datetime(df.index[-1], format="%Y-%m-%d")
+next_day = last_day + pd.Timedelta(days=1)
+# Convert next_day to a Unix timestamp
+next_day_unix = next_day.timestamp()
+prediction = model.predict([[next_day_unix]])[0]
 print(f'The predicted stock price for {next_day.date()} is {prediction:.2f}')
